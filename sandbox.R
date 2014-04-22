@@ -1,5 +1,5 @@
-# Simulate for different values of demdur
-
+pkgs <- c("Zelig", "stargazer", "car", "sandwich", "lmtest")
+suppressPackageStartupMessages(invisible(lapply(pkgs, require, character.only=TRUE)))
 
 stargazer(model.logit, logit.expanded, type="text", omit="Iyeara*", digits=2)
 
