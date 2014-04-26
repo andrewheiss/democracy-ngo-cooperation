@@ -45,6 +45,13 @@ QOG has a significant impact
 Puzzlingly, democracy weakens that cooperation
 
 
+Murdie finds that the quality of governance in a nation is a strong predictor of inter-NGO cooperation—as nations …
+
+However, Murdie's statistical analysis also uncover an empirical puzzle. While the probability of inter-NGO cooperation increases with better governance and higher trust, cooperation is less likely in democratic regimes than in non-democracies. Murdie posits that because her sample is limited to non-Western regimes, democracies outside North America and Western Europe have newer NGO sectors with less trust between organization, perhaps because these organizations struggle for legitimacy and autonomy from their nascent democratic states. 
+
+
+
+
 # Institutional proxies for civil society sector strength
 
 Measuring civil society strength systematically is difficult - Johns Hopkins vs. Civicus thing
@@ -67,23 +74,43 @@ H1: newer democracies less likely to cooperate
 
 H2: lower levels of democracy less likely to cooperate
 
-H3: The location of action has an effect on the likelihood of cooperation - regional effects
+H3: The location of cooperation has an effect on the likelihood of cooperation - regional effects
 
 
-# Data and methods
+# Modeling institutional effects on NGO cooperation
 
 ## Dependent variable
 
+In order to generate results that are comparable to Murdie's findings, I have maintained many of the original variables from her models. All three of my hypotheses rely on a measure of inter-NGO cooperation. As discussed previously, measuring civil society *strength* is difficult due to a disappointing dearth of data. Measuring civil society *activity* is equally challenging, as there is no standard metric for NGO actions undertaken. 
+
+To remedy this, Murdie used event data methods—long popular in the conflict forecasting literature—to compile a new measure of inter-INGO cooperation. Event data uses natural language text processing to determine the main actors and actions in a reported news story, essentially determining "who did what to whom." To calculate the "who," Murdie compiled a list of the 33,524 INGOs listed in the 2001/2002 *Yearbook of International Organizations* and worked with Virtual Research Associates (VRA) to find all events where a listed INGO was mentioned in the Reuters Global News Service archives from 1990–2009, previously prepared and coded for event data analysis by the Integrated Data for Event Analysis Project (IDEA). The sample was then limited to events where NGOs were both the source ("who") and the target ("to whom"). Finally, events were filtered further by limiting the action ("did what") to cooperative terms (i.e. events where an NGO "criticized" another NGO were ignored, while events where an NGO "collaborated" or "advised" another NGO were preserved), and collapsed to a count of inter-NGO cooperation events for each country and year. 
+
+Because this measure of cooperation is wholly reliant on a single source of event data, it is subject to some degree of selection bias. For a cooperative event to count, Reuters wire reporters must have taken some interest in the event and reported on it using the names of both organizations. As such, countries with reduced Reuters coverage (such as North Korea, which did permit country offices for foreign media organization during the time period under study) and countries that are naturally underreported (such as Central Asia) will underrepresent NGO activities, while countries or regions that are more salient (such as the Middle East during the sanctions in Iraq in the 1990s and the American war in Iraq in 2003) may overrepresent NGO action. In reality, the asymmetry in reporting may reflect an actual asymmetry in inter-NGO cooperation, since countries facing more salient conditions may indeed attract more concerted NGO responses. Murdie controls for this bias in part by including the overall number of NGO events (including single-NGO events and noncooperative inter-NGO events) as an independent variable in her models. Alternatively, it may be more accurate to control for the total number of reported events per country-year, which would normalize and rescale many of the countries that are under- or over-reported.^[This is the standard approach when using GDELT (see [http://gdeltproject.org/data.html](http://gdeltproject.org/data.html))] However, due to contract restrictions, the original raw event data is unavailable, so controlling for NGO events must suffice.
+
+Given these biases and the fact that there is only one archival news source for events, there are no NGO-related events in 91% of the included country-years. While it is possible that NGOs do not cooperate in many nations, it is likely that reliance on Reuters data has led to gross underreporting of actual inter-INGO cooperation. Recent and forthcoming developments in event data methods and sources can potentially increase this model's robustness. For example, the GDELT project uses "tens of thousands of broadcast, print and online news sources from nearly every corner of the globe"^[http://gdeltproject.org/about.html#datasources] and thus clearly has better (and potentially less biased coverage). In spite of the vastness of its sources and coverage, however, GDELT was not to work with events surrounding NGOs (there are a host of actor codes for protest and conflict actors, but few for non-state, non-governmental actors), and ongoing legal issues have led to turnovers in ownership and have left the project's reliability in question.^[http://asecondmouse.wordpress.com/2014/02/14/the-legal-status-of-event-data/] Fortunately international relations scholars are currently developing a new open source (and legally reliable) framework for massive event data collection. In the future these newer sources can be used to replicate this and other event data-based research by Murdie and others and yield even more accurate results. However, as this more comprehensive event data is either suspect or not ready yet, the existing Reuters data must again suffice.
+
+
+In her original paper, Murdie used two forms of her inter-NGO cooperation variable: (1) a binary measure indicating whether cooperation occurred, and (2) a count measure indicating the number of cooperative events in a given country-year
+
+Other modeling decisions…
+
 ## Independent variables
 
-UDS instead of dichotomous
-Age of democracy (plus age of authoritarianism for comparison?)
-Region
+While measures of civil society are severely lacking, there is fortunately a relatively established body of literature and data on measuring democratic institutions. My first two hypotheses deal directly with a country's overall institutionalization of democracy. For the first hypothesis, I measure democracy age by counting the number of consecutive years since each country scored a 6 or higher on the Polity IV scale.^[Rather than provide a dichotomous measure of democracy, the Policy IV project assigns democracy scores ranging from -10 to 10. Regime types labels are then assigned based on this score: autocracies (-10–-6), anocracies (-5–5), and democracies (6–10).] As seen in Figure X, most of the countries included in the dataset have had democratic regimes for fewer than 20 years. A handful of country-years exceeding 100 years of democracy were excluded from the figure, but included in the model.
 
+Murdie's original article included a binary control variable to indicate whether a country's political regime was a democracy or an autocracy. However, it has been shown that while dichotimization is convenient, much of the nuance and complexity in assigning a label of regime type is lost when boiling a country's institutionalization into one of two categories.[@EpsteinEtAl:2006] Additionally, while categories of institutionalization are useful at large magnitudes (i.e. there is a clear difference between a country that scores a -8 on the Polity IV scale and one that scores a 6), marginal changes in democratization scores are often meaningless (i.e. a change from a level 5 anocracy to a level 6 democracy is rather imperceptible and more susceptible to rater subjectivity). Though Polity IV and the numerous other competing democracy scales tend to result in similar findings in spite of their reliance on differing methods and multiple raters, there is little consensus about which scale is the more reliable or "best." Additionally, each of these scales fails to account for uncertainty in their estimates of levels of democratic governance. The Unified Democracy Score (UDS) scale was created in 2010 to combat these deficiencies of democratic measurement.[@PemsteinMeserveMelton:2010] This innovative scale uses Bayesian estimation and simulation to generate aggregate democracy scores based on 10 other standard measurement scales (such as Polity IV). Instead of assigning each country a single score, the UDS provides every country-year with a posterior score distribution, including a mean and a median score, a standard deviation, and 95% confidence intervals. UDS scores range from -2–2, with more democratic nations receiving higher scores (see Figure X for the distribution of mean, non-simulated UDS scores). 
 
-## Modeling decisions
+To test my third hypotheses I include regional-level fixed effects,^[Western Europe, North America, Australia, and New Zealand excluded.] which Murdie omitted from her original models. Fixed effects are generally simply controlled for and ignored (and often not reported in regression tables). However, to determine whether regional differences in institutional settings and problems facing NGOs play a determining role on NGO behavior, I treat these regional fixed effects as actual reported coefficients. 
+
+For the sake of comparability I also include many of Murdie's independent and control variables, each of which are described and cited in more detail in the original paper: (1) the Political Risk Services' quality of governance measure, which ranges from 0 (minimum governance) to 1 (high quality governance), (2) foreign aid per capita, (3) country population, (4) GDP per capita, and (5) the number of INGOs with members or volunteers in the country. Additionally, I include indicator variables for whether the country (6) underwent a humanitarian military intervention that year, or suffered a (7) natural disaster or (8) civil war in the past five years. As with Murdie's original models, all independent variables are lagged by one year.
+
 
 # Results
+
+
+
+
+
 
 # Conclusion
 
