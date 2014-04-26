@@ -40,7 +40,8 @@ polity.small <- polity %.%
 coop.data <- select(murdie, icrg_qog, humanitarian, disastersample, 
                     civilconflictsample, coopNGONGOdummy, 
                     lnaidpercap, lnsmorgs, countngo, chga_demo, 
-                    lnpop, lngdppercap, cowcode, year, ht_region, uw_gini, wdi_gini) %.%
+                    lnpop, lngdppercap, cowcode, year, ht_region, 
+                    uw_gini, wdi_gini, physint) %.%
   merge(uds, by=c("cowcode", "year")) %.%
   merge(polity.small) %.%
   filter(ht_region != "5. Western Europe and North America") %.%  # Exclude region
