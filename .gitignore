@@ -1,5 +1,8 @@
 Data/
 Figures/
+Tables/
 .R*
 *.Rproj*
 .Rproj.user
+Writing/vc.tex
+Writing/*.pdf
