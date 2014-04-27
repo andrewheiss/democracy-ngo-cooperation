@@ -68,12 +68,12 @@ summary(relogit.orig)
 
 # Extended logit model, using UDS and duration data
 logit.extended <- glm(lead.coopNGONGOdummy.factor ~ icrg_qog + humanitarian.factor +
-                        lnaidpercap + lnsmorgs + countngo + uds_mean + lnpop +
+                        lnaidpercap + lnsmorgs + countngo + uds_mean + demdur + lnpop +
                         lngdppercap + Iyeara1990 + Iyeara1991 + Iyeara1992 + 
                         Iyeara1993 + Iyeara1994 + Iyeara1995 + Iyeara1996 + 
                         Iyeara1998 + Iyeara1999 + Iyeara2000 + Iyeara2001 + 
                         Iyeara2002 + Iyeara2003 + disastersample.factor + 
-                        civilconflictsample.factor + demdur,
+                        civilconflictsample.factor,
                       data=coop.data,
                       family=binomial(link="logit"))
 summary(logit.extended)
@@ -81,15 +81,16 @@ vif(logit.extended)
 
 # Calculate robust SEs
 logit.extended.clustered <- robust.clusterify(logit.extended, coop.data, coop.data$cowcode)
+logit.extended.clustered$coefs
 
 # Rare event version of extended model
 relogit.extended <- zelig(lead.coopNGONGOdummy ~ icrg_qog + humanitarian.factor +
-                            lnaidpercap + lnsmorgs + countngo + uds_mean + lnpop +
+                            lnaidpercap + lnsmorgs + countngo + uds_mean + demdur + lnpop +
                             lngdppercap + Iyeara1990 + Iyeara1991 + Iyeara1992 + 
                             Iyeara1993 + Iyeara1994 + Iyeara1995 + Iyeara1996 + 
                             Iyeara1998 + Iyeara1999 + Iyeara2000 + Iyeara2001 + 
                             Iyeara2002 + Iyeara2003 + disastersample.factor + 
-                            civilconflictsample.factor + demdur,
+                            civilconflictsample.factor,
                           model="relogit", robust=list(method="weave"), data=coop.data)
 summary(relogit.extended)
 
@@ -97,12 +98,12 @@ summary(relogit.extended)
 # Extended logit model, using UDS and duration data + regional fixed effects
 logit.extended.region <- glm(lead.coopNGONGOdummy.factor ~ icrg_qog + 
                                humanitarian.factor +
-                               lnaidpercap + lnsmorgs + countngo + uds_mean + lnpop +
+                               lnaidpercap + lnsmorgs + countngo + uds_mean + demdur + lnpop +
                                lngdppercap + Iyeara1990 + Iyeara1991 + Iyeara1992 + 
                                Iyeara1993 + Iyeara1994 + Iyeara1995 + Iyeara1996 + 
                                Iyeara1998 + Iyeara1999 + Iyeara2000 + Iyeara2001 + 
                                Iyeara2002 + Iyeara2003 + disastersample.factor + 
-                               civilconflictsample.factor + demdur + ht_region,
+                               civilconflictsample.factor + ht_region,
                              data=coop.data,
                              family=binomial(link="logit"))
 summary(logit.extended.region)
@@ -113,12 +114,12 @@ logit.extended.region.clustered <- robust.clusterify(logit.extended.region, coop
 
 # Rare event version of extended + region model
 relogit.extended.region <- zelig(lead.coopNGONGOdummy ~ icrg_qog + humanitarian.factor +
-                                   lnaidpercap + lnsmorgs + countngo + uds_mean + lnpop +
+                                   lnaidpercap + lnsmorgs + countngo + uds_mean + demdur + lnpop +
                                    lngdppercap + Iyeara1990 + Iyeara1991 + Iyeara1992 + 
                                    Iyeara1993 + Iyeara1994 + Iyeara1995 + Iyeara1996 + 
                                    Iyeara1998 + Iyeara1999 + Iyeara2000 + Iyeara2001 + 
                                    Iyeara2002 + Iyeara2003 + disastersample.factor + 
-                                   civilconflictsample.factor + demdur + ht_region,
+                                   civilconflictsample.factor + ht_region,
                                  model="relogit", robust=list(method="weave"), 
                                  data=coop.data)
 summary(relogit.extended.region)
@@ -159,45 +160,61 @@ lapply(regional.models, summary)
 # Original models + extensions
 var.names <- c("Quality of government", "Humanitarian intervention", 
                "Aid per capita (ln)", "INGO members/volunteers (ln)", 
-               "Media coverage of NGO events", "Democracy", 
-               "Unified democracy score (mean)", "Population (ln)", 
+               "Media coverage of NGO events", "Democracy", "Unified democracy score (mean)",
+               "Years of democratic rule", "Population (ln)", 
                "GDP per capita (ln)", "Disaster in past 5 years", 
-               "Civil conflict in past 5 years", "Years of democratic rule", 
+               "Civil conflict in past 5 years", 
                "Constant")
-col.labels <- c("Original logit", "Original rare event logit", "Extended logit", 
-                "Extended rare event logit", "Extended + regional effects logit", 
-                "Extended + regional effects rare event logit")
+col.labels <- c("Original logit", "Original logit (RE)", "Extended logit", 
+                "Extended logit (RE)", "Extended logit", 
+                "Extended logit (RE)")
 
 stargazer(logit.orig, relogit.orig, logit.extended, relogit.extended,
           logit.extended.region, relogit.extended.region,
-          digits=2, star.cutoffs=c(0.05, 0.01, 0.001),
+          digits=2, star.cutoffs=c(0.05, 0.01, 0.001), title="Determinants of NGO-NGO cooperation",
           covariate.labels=var.names, column.labels=col.labels, model.names=FALSE,
-          dep.var.caption="", dep.var.labels.include=FALSE,
-          omit=c("Iyeara*", "ht_region*"), 
-          type="text", #out="all_models.tex",
+          dep.var.caption="", dep.var.labels.include=FALSE, notes.label="Notes:",
+          omit=c("Iyeara*", "ht_region*", "Constant"), omit.stat=c("aic", "ll"), #float.env="sidewaystable",
+          type="latex", out="Tables/all_models.tex", font.size="footnotesize", no.space=TRUE,
           add.lines=list(c("Year fixed effects", rep("Yes", 6)),
                          c("Regional fixed effects", rep("No", 4), rep("Yes", 2))),
-          se=list(logit.orig.clustered[,2], NULL, logit.extended.clustered[,2], NULL, 
-                  logit.extended.region.clustered[,2], NULL),
-          p=list(logit.orig.clustered[,4], NULL, logit.extended.clustered[,4], NULL, 
-                 logit.extended.region.clustered[,4], NULL),
+          se=list(logit.orig.clustered$coefs[,2], NULL, logit.extended.clustered$coefs[,2], NULL, 
+                  logit.extended.region.clustered$coefs[,2], NULL),
+          p=list(logit.orig.clustered$coefs[,4], NULL, logit.extended.clustered$coefs[,4], NULL, 
+                 logit.extended.region.clustered$coefs[,4], NULL),
           notes.align="l", 
-          notes=c("Logistic regression models use robust standard errors clustered by country.", 
-                  "Due to technical differences between the implementation of rare events logistic 
-                  regression in Stata and R, coefficients differ slightly from the original paper.", 
-                  "Additionally, rare events models do not use clustered standard errors."))
+          notes=c("Logistic regression models use robust standard errors clustered by region. 
+                  Due to technical differences", "between the implementation of rare events logistic
+                  regression in Stata and R, coefficients differ slightly", "from the original paper. 
+                  Additionally, rare events models do not use clustered standard errors."))
 
 
 # Regional models
 # Remove the "N. " preface to regions
 col.labels <- sub("^\\d\\. ", "", levels(coop.data$ht_region)[-c(5, 9, 10)])
+
+
+# Use \parbox to get multiple lines in a cell
+# http://tex.stackexchange.com/a/11555/11851
+two.lines <- function(top, bottom) {
+  paste0("\\parbox{2cm}{\\centering ", top, " \\\\ ", bottom, "}")
+}
+
+two.lines("Hey", "You")
+
+col.labels <- c(two.lines("Eastern Europe \\&", "Post USSR"), "Latin America", 
+                two.lines("North Africa \\&", "Middle East"), two.lines("Sub-Saharan", "Africa"), 
+                "East Asia", "Southeast Asia", "South Asia")
 var.names <- c("Quality of governance", "Unifed democracy score (mean)", 
                "Population (ln)", "GDP per capita (ln)", "Constant")
 
-stargazer(regional.models, type="text", #out="regional_models.tex", 
-          omit="Iyeara*", digits=2, star.cutoffs=c(0.05, 0.01, 0.001),
+stargazer(regional.models, type="latex", out="Tables/regional_models.tex", 
+          title="Determinants of NGO-NGO cooperation (by region)",
+          font.size="footnotesize", no.space=TRUE, omit.stat=c("aic", "ll"), 
+          omit=c("Iyeara*", "Constant"), digits=2, star.cutoffs=c(0.05, 0.01, 0.001),
           covariate.labels=var.names, column.labels=col.labels, model.names=FALSE,
           dep.var.caption="", dep.var.labels.include=FALSE,
           add.lines=list(c("Year fixed effects", rep("Yes", 7))), 
           notes.align="l", 
           notes=c("All models use logistic regression with non-robust, unclustered standard errors."))
+
