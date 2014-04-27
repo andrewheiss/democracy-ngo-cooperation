@@ -30,7 +30,8 @@ robust.clusterify <- function(model, dat, cluster) {
     dfc <- (M/(M-1))*((N-1)/(N-K))
     uj <- apply(estfun(model),2, function(x) tapply(x, cluster, sum));
     vcovCL <- dfc*sandwich(model, meat=crossprod(uj)/N)
-    coeftest(model, vcovCL, type="HC1")  # HC1 or HC0 are close to Stata
+    coefs <- coeftest(model, vcovCL, type="HC1")  # HC1 or HC0 are close to Stata
+    return(list(clcov=vcovCL, coefs=coefs))
   })
 }
 
