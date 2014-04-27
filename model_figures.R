@@ -36,7 +36,7 @@ p <- ggplot(predicted.logit, aes(x=icrg_qog, y=pred.prob))
 pred.demo <- p + geom_ribbon(aes(ymin=LL, ymax=UL, fill=chga_demo), alpha=.2) + 
   geom_line(aes(colour=chga_demo), size=1) + scale_y_continuous(label=percent) + 
   labs(x="Quality of governance (ICRG)", y="Predicted probability of cooperation") + 
-  theme_bw()
+  theme_ath(8) + theme(legend.title=element_blank())
 pred.demo
 ggsave(pred.demo, filename="Figures/pred_demo.pdf", width=6, height=3.5)
 
@@ -49,14 +49,15 @@ expanded.data <- model.frame(logit.extended)
 
 # Sample data, with full range of qog for dictatorships and democracies
 X <- with(expanded.data, data.frame(
-  icrg_qog=mean(icrg_qog), 
+#   icrg_qog=mean(icrg_qog), 
+  icrg_qog=rep(seq(0, 1, 0.05), 2),
   humanitarian.factor=factor(0), lnaidpercap=mean(lnaidpercap),
-  lnsmorgs=mean(lnsmorgs), countngo=mean(countngo), uds_mean=seq(0, 1.5, 0.05), 
+  lnsmorgs=mean(lnsmorgs), countngo=mean(countngo), uds_mean=mean(uds_mean),#uds_mean=seq(0, 1.5, 0.05), 
   lnpop=mean(lnpop), lngdppercap=mean(lngdppercap), 
   Iyeara1990=0, Iyeara1991=0, Iyeara1992=0, Iyeara1993=0, Iyeara1994=0, 
   Iyeara1995=0, Iyeara1996=0, Iyeara1998=0, Iyeara1999=0, Iyeara2000=0,
   Iyeara2001=0, Iyeara2002=0, Iyeara2003=1, disastersample.factor=factor(1), 
-  civilconflictsample.factor=factor(1), demdur=rep(c(0, 10, 100), each=31)))  # demdur=rep(seq(0, 20, 1), each=61)
+  civilconflictsample.factor=factor(1), demdur=rep(c(0, 10, 100), each=42)))  # demdur=rep(seq(0, 20, 1), each=61)
 
 # Predict using sample data
 predicted.logit <- cbind(X, predict(logit.extended, newdata=X, type="link", se=TRUE))
@@ -66,9 +67,14 @@ predicted.logit <- predicted.logit %.%
   mutate(UL=plogis(fit + (1.96 * se.fit)))
 
 # Plot predicted probabilities with SEs
-p <- ggplot(predicted.logit, aes(x=uds_mean, y=pred.prob))
+p <- ggplot(predicted.logit, aes(x=icrg_qog, y=pred.prob))
 pred.uds.dem <- p + geom_ribbon(aes(ymin=LL, ymax=UL, fill=factor(demdur)), alpha=.2) + 
-  geom_line(aes(colour=factor(demdur)), size=1)
+  geom_line(aes(colour=factor(demdur)), size=1) + scale_y_continuous(label=percent) +
+  labs(x="", y="Predicted probability of cooperation") + 
+  scale_colour_discrete(name="Years of consecutive democracy") + 
+  scale_fill_discrete(name="Years of consecutive democracy") + 
+  theme_ath(8)
+pred.uds.dem
 ggsave(pred.uds.dem, filename="Figures/pred_uds_dem.pdf", width=6, height=3.5)
 
 
