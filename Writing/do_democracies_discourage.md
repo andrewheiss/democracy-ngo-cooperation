@@ -9,19 +9,8 @@ published: Incomplete Draft. Please do not cite without permission.
 abstract: Nope.
 ...
 
-To do:
-* Graphs of 
-	* Extension predicted probabilities over governance, separated by democracies and non-democracies + demdur
-	* UDS simulation + predicted probabilities
-	* regional predicted probabilities
 
-Country-level or regional-level fixed effects are generally controlled for and ignored, like time fixed effects. But in this case, regional fixed effects actually tell an interesting story and explain much of the counterintuitive finding of democracy discouraging cooperation - types of NGOs that work in each region are more/less amenable to cooperation + environments more/less welcoming to cooperation
-Restrictions on NGOs
 Anecdotes of cooperating NGOs
-
-
-
-# Introduction
 
 Find good/bad governance democracy/non-democracy in ME, Asia
 Case of NGOs cooperating in each of the 4 types
@@ -57,6 +46,7 @@ However, Murdie's statistical analysis also uncover an empirical puzzle. While t
 Measuring civil society strength systematically is difficult - Johns Hopkins vs. Civicus thing
 No data on age of sector, level of trust - WVS, Gallup, but not a lot of data
 Same with NGO restrictions - government regulations on NGO funding and activities - that one paper + Bloodgood, Ron, and Prakash at ISA
+
 
 Trust typically measured by WVS question on trust or Gallup question on wallets, but they don't go back that far. Murdie used quality of governance as a proxy for trust
 
@@ -118,7 +108,7 @@ Table 1 provides the results for Murdie's replicated logistic and rare-event mod
 
 The findings from my expanded model are included in columns 3 and 4. To test the hypotheses of whether the age and level or quality of a democracy explain some variation of inter-NGO cooperation, I have replaced the binary "dictatorship/democracy" measure with the mean UDS score and the number of years of consecutive democracy. Despite the theoretical supposition that younger democracies face barriers to high quality governance such as increased corruption, weakened rule of law, and a weaker (and less trusting) civil society sector, the duration of democratic rule does not have a significant impact on the probability of cooperation (z = -1.81, p = 0.071). If we use a 90% confidence threshold, democratic age is significant, but not substantively so—each year of consecutive democratic rule decreases the probability of cooperation by 2%. Even if we use this lower threshold, the changes in probability are not substantive—Figure X shows the predicted probabilities of cooperation for varying durations of democracy (with all other values held at the mean), and as in Figure X, there are no significant differences in prediction. There is therefore insubstantial evidence that younger democracies are more likely to see INGO cooperation. 
 
-![Predicted probabilities of inter-NGO cooperation for varying years of consecutive democracy](../Figures/pred_uds_dem.pdf)
+![Predicted probabilities of inter-NGO cooperation for varying years of consecutive democracy](../Figures/pred_demdur.pdf)
 
 The models provide a similar conclusion for the hypothesis that higher levels of democracy see less NGO cooperation. The estimated coefficient for mean UDS scores is marginally smaller than the original binary indicator (countries are 41% less likely to see inter-NGO cooperation for each one-point increase in UDS scores), but this finding is no longer significant (z = -1.94, p = 0.053). One advantage to using the UDS scores, though, is that the scores are actually posterior probability distributions, which permits simulation and resampling. Figure X shows the estimated coefficients for the UDS and quality of governance where the logistic regression model was run 100 times using simulated UDS scores, generated using the mean and standard deviation of the UDS's posterior distribution. The violin plots (density plots mirrored horizontally)[@HintzeNelson:1998] demonstrate the distribution of key model coefficients, while the dark grey lines show the simulated 95% confidence intervals. As seen in the plot, simulated UDS scores can result in marginally different coefficient estimates that consistently remain negative, ranging from -0.16 to -0.82 (log odds), which shows that countries are 15%–56% less likely to experience inter-NGO cooperation as they increase in UDS scores. However, the UDS coefficient in most simulations remains insignificant at a 95% confidence level. 
 
@@ -128,22 +118,24 @@ The figure does show that quality of governance—Murdie's primary variable of i
 
 Although actual democratic institutions may not explain variation in collaboration, unmeasured region- or country-specific conditions are more successful in predicting inter-NGO cooperation. In her original models, Murdie only included fixed effects variables to control for time, capturing effects that may be specific to certain years—perhaps some years were inherently more amenable to cooperation than others. To test my third hypothesis—that regional differences affect the probability of cooperation—I included regional fixed effects in columns 5 and 6 of Table 1. Filtering out region-specific characteristics increased the quality of governance effect more, but had no significant influence on the potential impact of UDS scores or consecutive years of democracy. Rather than keep these fixed effects hidden, however, a richer story of regional effects can be told by looking at the effects of the model in each region. 
 
-To see these individual regional effects, I estimated separate regression models for a subset of data for each region. Running multiple models rather than simply including the interaction terms for each region in the original model essentially allows for every possible interaction between region and other variables included in the model—instead of simply shifting the intercept or slope for each region, individual regional models ostensibly reflect the full impact of the region on the aggregate model as a whole. However, running separate models presents a mathematical challenge, as subsetting the data into smaller groups decreases the number of observations available to model and increases the number of observations dropped due to missing data. To maintain the separate models' statistical power, I was forced to both ignore some regions and remove some control variables in the model. I dropped all observations from the smallest two regions—the Pacific and the Carribbean—and only included independent variables with relatively complete cases in each region. Additionally, results from Asia may be less reliable than other regions because of their smaller number of observations. 
+To see these individual regional effects, I estimated separate regression models for a subset of data for each region. Running multiple models rather than simply including the interaction terms for each region in the original model essentially allows for every possible interaction between region and other variables included in the model—instead of simply shifting the intercept or slope for each region, individual regional models ostensibly reflect the full impact of the region on the aggregate model as a whole. However, running separate models presents a mathematical challenge, as subsetting the data into smaller groups decreases the number of observations available to model and increases the number of observations dropped due to missing data. To maintain the separate models' statistical power, I was forced to both ignore some regions and remove some control variables in the model. I dropped regions where there were fewer than 80 observations; removed indicators for humanitarian interventions, natural disasters, and civil conflicts; and dropped variables measuring foreign aid per capita and the number of INGO members in the country. Some regions in the sample did not suffer from disaster or conflict, and others received little (or unreported) foreign aid, thus weakening their region-specific models too much to return useful results.
 
-With these important caveats, results from the individual regional models are presented in Table 2. 
+With these important caveats, results from the individual regional models are presented in Table 2. Region-specific differences appear to play a crucial role in the reliability of the previously specified models. For example, quality of governance plays an extremely important role in predicting inter-INGO cooperation in Latin America, but not as strongly (if at all) in other regions. Similarly, democracy (as measured by UDS scores) has a significant negative impact in Latin America alone—all other regions balance out the aggregate coefficients reported in Table 1. However, even with these changes in significant coefficients, the substantive significance of the regional models remains suspect. The differences in regions are perhaps best understood using predicted probabilities. As seen in Figure X, the individual models for Eastern Europe and Latin America fail to make reliable predictions. Cooperation is actually more likely in the Middle East and North Africa as democracy increases, yet less likely in Southeast Asia and Sub-Saharan Africa—averaging the disparate regional effects eventually yields the original negative democratic effect.
 
-
-# Add note about using log odds, suppressing the constant - rare event(!) models reported here do not use clustered
-
-
+![Predicted probabilities of inter-NGO cooperation for varying levels of democracy (UDS) by region](../Figures/pred_region_uds.pdf)
 
 \begin{landscape}
 \input{../Tables/regional_models.tex}
 \end{landscape}
 
+
 # Conclusion
 
 Nope. Democracies don't inherently discourage cooperation. Other factors—regional specific ones, quality of governance, etc.—do, but regime type doesn't.
+
+
+The counterintuitive democracy effect originally found by Murdie may be attributable to regional and country-level differences. Turkey and Israel—both in the Middle East—are democracies with relatively high UDS scores, and both saw more cooperative events than democracies in other regions. 
+China, not democratic but a hotbed for collaboration over human rights - blah blah
 
 Except maybe in specific regions?
 
