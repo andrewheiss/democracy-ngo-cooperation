@@ -125,7 +125,6 @@ relogit.extended.region <- zelig(lead.coopNGONGOdummy ~ icrg_qog + humanitarian.
 summary(relogit.extended.region)
 
 
-
 #-------------------------
 # Models for each region
 #-------------------------
@@ -138,19 +137,20 @@ summary(relogit.extended.region)
 
 # bquote() + .() passes the actual names of the arguments into the model call; eval() actually runs the model
 run.logits <- function(region) {
-  model <- bquote(glm(lead.coopNGONGOdummy.factor ~ icrg_qog + uds_mean + 
-                        lnpop + lngdppercap + Iyeara1990 + Iyeara1991 + 
-                        Iyeara1992 + Iyeara1993 + Iyeara1994 + Iyeara1995 + 
-                        Iyeara1996 + Iyeara1998 + Iyeara1999 + Iyeara2000 + 
-                        Iyeara2001 + Iyeara2002 + Iyeara2003,
+  model <- bquote(glm(lead.coopNGONGOdummy.factor ~ icrg_qog +
+                        countngo + uds_mean + demdur + lnpop +
+                        lngdppercap + Iyeara1990 + Iyeara1991 + Iyeara1992 + 
+                        Iyeara1993 + Iyeara1994 + Iyeara1995 + Iyeara1996 + 
+                        Iyeara1998 + Iyeara1999 + Iyeara2000 + Iyeara2001 + 
+                        Iyeara2002 + Iyeara2003, 
                       data=coop.data, subset=(ht_region==.(region)),
                       family=binomial(link="logit")))
   eval(model)
 }
 
 # Create a list of models for all regions, given a model formula
-regional.models <- lapply(levels(coop.data$ht_region)[-c(5, 9, 10)], FUN=run.logits)
-names(regional.models) <- levels(coop.data$ht_region)[-c(5, 9, 10)]  # Name the list for convenience
+regional.models <- lapply(levels(coop.data$ht_region)[c(2, 3, 4, 7, 6)], FUN=run.logits)
+names(regional.models) <- levels(coop.data$ht_region)[c(2, 3, 4, 7, 6)]  # Name the list for convenience
 lapply(regional.models, summary)
 
 
@@ -183,29 +183,19 @@ stargazer(logit.orig, relogit.orig, logit.extended, relogit.extended,
           p=list(logit.orig.clustered$coefs[,4], NULL, logit.extended.clustered$coefs[,4], NULL, 
                  logit.extended.region.clustered$coefs[,4], NULL),
           notes.align="l", 
-          notes=c("Logistic regression models use robust standard errors clustered by region. 
-                  Due to technical differences", "between the implementation of rare events logistic
+          notes=c("Reported coefficients are log odds. Constants have been suppressed.", 
+                  "Logistic regression models use robust standard errors clustered by region. 
+                  Due to technical differences", "between the implementation of rare event logistic
                   regression in Stata and R, coefficients differ slightly", "from the original paper. 
-                  Additionally, rare events models do not use clustered standard errors."))
+                  Additionally, rare event models reported here do not use clustered standard errors."))
 
 
 # Regional models
-# Remove the "N. " preface to regions
-col.labels <- sub("^\\d\\. ", "", levels(coop.data$ht_region)[-c(5, 9, 10)])
-
-
-# Use \parbox to get multiple lines in a cell
-# http://tex.stackexchange.com/a/11555/11851
-two.lines <- function(top, bottom) {
-  paste0("\\parbox{2cm}{\\centering ", top, " \\\\ ", bottom, "}")
-}
-
-two.lines("Hey", "You")
-
 col.labels <- c(two.lines("Eastern Europe \\&", "Post USSR"), "Latin America", 
-                two.lines("North Africa \\&", "Middle East"), two.lines("Sub-Saharan", "Africa"), 
-                "East Asia", "Southeast Asia", "South Asia")
-var.names <- c("Quality of governance", "Unifed democracy score (mean)", 
+                two.lines("North Africa \\&", "Middle East"), 
+                two.lines("Sub-Saharan", "Africa"), "Southeast Asia")
+var.names <- c("Quality of governance", "Media coverage of NGO events", 
+               "Unified democracy score (mean)","Years of democratic rule", 
                "Population (ln)", "GDP per capita (ln)", "Constant")
 
 stargazer(regional.models, type="latex", out="Tables/regional_models.tex", 
@@ -215,6 +205,6 @@ stargazer(regional.models, type="latex", out="Tables/regional_models.tex",
           covariate.labels=var.names, column.labels=col.labels, model.names=FALSE,
           dep.var.caption="", dep.var.labels.include=FALSE,
           add.lines=list(c("Year fixed effects", rep("Yes", 7))), 
-          notes.align="l", 
-          notes=c("All models use logistic regression with non-robust, unclustered standard errors."))
-
+          notes.align="l", notes.label="Notes:",
+          notes=c("Reported coefficients are log odds. Constants have been suppressed.", 
+                  "All models use logistic regression with non-robust, unclustered standard errors."))
