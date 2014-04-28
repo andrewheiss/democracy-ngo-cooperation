@@ -1,6 +1,45 @@
 pkgs <- c("Zelig", "stargazer", "car", "sandwich", "lmtest")
 suppressPackageStartupMessages(invisible(lapply(pkgs, require, character.only=TRUE)))
 
+
+# Separation plots
+separation.plot(predict(model.logit, type="response"), model.data$lead.coopNGONGOdummy.factor, line=TRUE)
+separation.plot(predict(logit.expanded, type="response"), expanded.data$lead.coopNGONGOdummy.factor, line=TRUE)
+
+
+predicted.values <- predict(model.logit, type="response")
+actual.values <- model.data$lead.coopNGONGOdummy.factor
+
+
+
+# Predicted probabilities for regions in dictatorships and democracies
+X <- with(expanded.data, data.frame(
+  icrg_qog=rep(seq(0, 1, 0.05), 2),
+  chga_demo=rep(c("0. Dictatorship", "1. Democracy"), each=21),
+  Iyeara1990=0, Iyeara1991=0, Iyeara1992=0, Iyeara1993=0, Iyeara1994=0, 
+  Iyeara1995=0, Iyeara1996=0, Iyeara1998=0, Iyeara1999=0, Iyeara2000=0,
+  Iyeara2001=0, Iyeara2002=0, Iyeara2003=1))
+
+sim.pred <- lapply(regional.models, predict, newdata=X, type="link", se.fit=TRUE)
+
+asdf <- ldply(sim.pred, data.frame) %.%
+  mutate(icrg_qog=rep(seq(0, 1, 0.05), 14)) %.%
+  mutate(chga_demo=rep(rep(c("0. Dictatorship", "1. Democracy"), each=21), 7)) %.%
+  mutate(pred.prob=plogis(fit)) %.%
+  mutate(LL=plogis(fit - (1.96 * se.fit))) %.%
+  mutate(UL=plogis(fit + (1.96 * se.fit)))
+
+plot.asdf <- asdf %.%
+  filter(.id != "8. South Asia") %.%
+  mutate(region=factor(.id))
+
+p <- ggplot(plot.asdf, aes(x=icrg_qog, y=pred.prob, colour=region))
+pred.region.demo <- p + geom_line(size=2) + facet_wrap(~ chga_demo, nrow=2)
+ggsave(pred.region.demo, filename="Figures/pred_region_demo.pdf", width=7, height=4)
+
+
+
+
 stargazer(model.logit, logit.expanded, type="text", omit="Iyeara*", digits=2)
 
 plot(icrg_qog ~ uds_mean, data=coop.data, pch=20)
