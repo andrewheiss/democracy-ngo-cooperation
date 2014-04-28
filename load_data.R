@@ -16,6 +16,24 @@ demdur.calc <- function(x) {
   (!x) * unlist(lapply(rle(x)$lengths, seq_len))
 }
 
+# Remove "n." prefix from variables
+remove.nums <- function(variable) {
+  sub("^\\d+\\. ", "", variable)
+}
+
+# Use \parbox to get multiple lines in a cell
+# http://tex.stackexchange.com/a/11555/11851
+two.lines <- function(top, bottom) {
+  paste0("\\parbox{3cm}{\\centering ", top, " \\\\ ", bottom, "}")
+}
+
+# Custom ggplot theme
+theme_ath <- function(base_size=12) {
+  ret <- theme_bw(base_size) + 
+    theme(axis.title=element_text(vjust=0.2), legend.position="bottom")
+  ret
+}
+
 
 #------------------------
 # Load and reshape data
