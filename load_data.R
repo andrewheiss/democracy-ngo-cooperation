@@ -63,6 +63,8 @@ coop.data <- select(murdie, icrg_qog, humanitarian, disastersample,
   merge(uds, by=c("cowcode", "year")) %.%
   merge(polity.small) %.%
   filter(ht_region != "5. Western Europe and North America") %.%  # Exclude region
+  mutate(ht_region=factor(remove.nums(ht_region))) %.%
+  mutate(chga_demo=factor(remove.nums(chga_demo))) %.%
   group_by(cowcode) %.%  # Separate into country chunks
   mutate(lead.coopNGONGOdummy=lead(coopNGONGOdummy)) %.%  # Create lead variable
   ungroup() %.%
@@ -72,7 +74,8 @@ coop.data <- select(murdie, icrg_qog, humanitarian, disastersample,
   mutate(disastersample.factor=factor(disastersample)) %.%
   mutate(civilconflictsample.factor=factor(civilconflictsample)) %.%
   mutate(poor.dem=ifelse(lngdppercap <= median(lngdppercap, na.rm=TRUE) & 
-                           chga_demo=="1. Democracy", "Poor", "Not poor"))
+                           chga_demo=="Democracy", "Poor", "Not poor"))
+  
 
 # Add dummy variables for each factor level
 coop.data <- cbind(coop.data, model.matrix(~ Iyeara -1, data=coop.data))
