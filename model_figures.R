@@ -2,6 +2,7 @@
 source("models.R")
 library(ggplot2)
 library(scales)
+library(grid)
 library(reshape2)
 
 
@@ -38,7 +39,9 @@ p <- ggplot(predicted.logit, aes(x=icrg_qog, y=pred.prob))
 pred.demo <- p + geom_ribbon(aes(ymin=LL, ymax=UL, fill=chga_demo), alpha=.2) + 
   geom_line(aes(colour=chga_demo), size=1) + scale_y_continuous(label=percent) + 
   labs(x="Quality of governance (ICRG)", y="Predicted probability of cooperation") + 
-  theme_ath(8) + theme(legend.title=element_blank())
+  scale_colour_manual(values=c("#88419d", "#e31a1c")) + 
+  scale_fill_manual(values=c("#88419d", "#e31a1c")) + 
+  theme_ath(8) + theme(legend.title=element_blank(), legend.key.size=unit(0.5, "lines"))
 pred.demo
 ggsave(pred.demo, filename="Figures/pred_demo.pdf", width=6, height=3.5)
 
@@ -73,9 +76,9 @@ p <- ggplot(predicted.logit, aes(x=icrg_qog, y=pred.prob))
 pred.demdur <- p + geom_ribbon(aes(ymin=LL, ymax=UL, fill=factor(demdur)), alpha=.2) + 
   geom_line(aes(colour=factor(demdur)), size=1) + scale_y_continuous(label=percent) +
   labs(x="Quality of governance (ICRG)", y="Predicted probability of cooperation") + 
-  scale_colour_discrete(name="Years of consecutive democracy") + 
-  scale_fill_discrete(name="Years of consecutive democracy") + 
-  theme_ath(8)
+  scale_colour_manual(name="Years of consecutive democracy", values=c("#1b9e77", "#d95f02", "#7570b3")) + 
+  scale_fill_manual(name="Years of consecutive democracy", values=c("#1b9e77", "#d95f02", "#7570b3")) + 
+  theme_ath(8) + theme(legend.key.size=unit(0.5, "lines"))
 pred.demdur
 ggsave(pred.demdur, filename="Figures/pred_demdur.pdf", width=6, height=3.5)
 
@@ -108,7 +111,8 @@ pred.plot <- ldply(sim.pred, data.frame) %.%
 pred.region.uds <- ggplot(pred.plot, aes(x=uds_mean, y=pred.prob.adj, color=region)) + 
   geom_line(size=1) + scale_y_continuous(label=percent) +
   labs(x="Unified democracy score", y="Predicted probability of cooperation") + 
+  scale_colour_manual(values=c("#377eb8", "#4daf4a", "#984ea3", "#999999", "#a65628")) + 
   guides(colour=guide_legend(nrow=2, title=NULL)) +
-  theme_ath(8) + theme(legend.key=element_blank())
+  theme_ath(8) + theme(legend.key=element_blank(), legend.key.size=unit(0.5, "lines"))
 pred.region.uds
 ggsave(pred.region.uds, filename="Figures/pred_region_uds.pdf", width=6, height=3.5)

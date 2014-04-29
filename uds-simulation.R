@@ -63,6 +63,7 @@ coefs.plot <- simulated.coefs.long %.%
 uds.sim <- ggplot(coefs.plot, aes(y=estimate, x=coef.name, fill=coef.name)) + 
   geom_linerange(aes(ymin=lower, ymax=upper), size=4, alpha=0.008, color="black") + 
   geom_violin(scale="width", colour=NA) + geom_hline(yintercept=0) + coord_flip() + 
+  scale_fill_manual(values=c("#c51b7d", "#4d9221")) + 
   labs(x=NULL, y="Coefficient estimate (log odds)") + theme_ath(8) + 
   guides(fill=FALSE)
 uds.sim
