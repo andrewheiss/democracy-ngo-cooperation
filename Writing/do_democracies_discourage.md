@@ -136,17 +136,22 @@ The findings presented here indicate two avenues for future research: First, the
 
 # Software
 
-All the graphs, tables, and model results can be replicated using code available at [https://github.com/andrewheiss/Media-and-NGOs](https://github.com/andrewheiss/Media-and-NGOs) and the following open source software:
+All the graphs, tables, and model results can be replicated using code available at [https://github.com/andrewheiss/democracy-ngo-cooperation](https://github.com/andrewheiss/democracy-ngo-cooperation) and the following open source software:
 
 \ 
 
 \begingroup \hangstart
+
+Hlavac, Marek. *stargazer: LaTeX code and ASCII text for well-formatted regression and summary statistics tables.* 2014. Version 5.0. 
+
+Imai, Kosuke, Gary King, and Olivia Lau. *relogit: Rare Events Logistic Regression for Dichotomous Dependent Variables.* Version 4.2-1
 
 R Core Team. *R: A Language and Environment for Statistical Computing.* Vienna, Austria: R Foundation for Statistical Computing, 2013. Version 3.0.2.
 
 Wickham, Hadley. *ggplot2: Elegant Graphics for Data Analysis.* Springer New York, 2009. Version 0.9.3.1.
 
 \endgroup
+
 
 # References
 \setlength{\parindent}{-0.2in}
