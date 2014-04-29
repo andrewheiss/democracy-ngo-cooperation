@@ -43,7 +43,7 @@ pred.demo <- p + geom_ribbon(aes(ymin=LL, ymax=UL, fill=chga_demo), alpha=.2) +
   scale_fill_manual(values=c("#88419d", "#e31a1c")) + 
   theme_ath(8) + theme(legend.title=element_blank(), legend.key.size=unit(0.5, "lines"))
 pred.demo
-ggsave(pred.demo, filename="Figures/pred_demo.pdf", width=6, height=3.5)
+ggsave(pred.demo, filename="Figures/pred_demo.pdf", width=6, height=3)
 
 
 #---------------------------------------------------------------------

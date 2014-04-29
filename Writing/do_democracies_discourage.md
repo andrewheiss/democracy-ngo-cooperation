@@ -134,6 +134,20 @@ I find that democratic regimes do not inherently discourage cooperation. Neither
 The findings presented here indicate two avenues for future research: First, there is a need for richer and more detailed event data. As discussed above, the Reuters database used here is limited to events reported by a single news agency and is likely underreporting inter-NGO activities. Recent developments in event data look promising and the large scale, multiply-sourced datasets currently in production should provide an excellent resource for retesting the hypotheses laid out here. Second, Murdie's work does an excellent job of providing macro-level explanations for the variation in inter-INGO cooperation, but it does so at the expense of more granular country- and regional-level details and trends. There is a need for more detailed case studies focused on specific regions, using qualitative methods to explain the cultural and historical determinants of INGO behavior. Combining rigorous and creative quantitative work with detailed case studies will allow us to better understand the nuances of these findings and make more applicable policy recommendations for improving the effectiveness of global civil society. 
 
 
+# Software
+
+All the graphs, tables, and model results can be replicated using code available at [https://github.com/andrewheiss/Media-and-NGOs](https://github.com/andrewheiss/Media-and-NGOs) and the following open source software:
+
+\ 
+
+\begingroup \hangstart
+
+R Core Team. *R: A Language and Environment for Statistical Computing.* Vienna, Austria: R Foundation for Statistical Computing, 2013. Version 3.0.2.
+
+Wickham, Hadley. *ggplot2: Elegant Graphics for Data Analysis.* Springer New York, 2009. Version 0.9.3.1.
+
+\endgroup
+
 # References
 \setlength{\parindent}{-0.2in}
 \setlength{\leftskip}{0.2in}
