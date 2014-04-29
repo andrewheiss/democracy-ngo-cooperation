@@ -53,20 +53,20 @@ docx:	clean $(DOCX)
 bib:	$(BIB)
 
 %.html:	%.md
-	pandoc -r markdown+simple_tables+table_captions+yaml_metadata_block -w html -S --template=$(PREFIX)/templates/html.template --css=$(PREFIX)/marked/kultiad-serif.css --filter pandoc-citeproc --csl=$(PREFIX)/csl/$(CSL).csl --bibliography=$(BIB_FILE) -o $@ $<
+	replace_includes $< | pandoc -r markdown+simple_tables+table_captions+yaml_metadata_block -w html -S --template=$(PREFIX)/templates/html.template --css=$(PREFIX)/marked/kultiad-serif.css --filter pandoc-citeproc --csl=$(PREFIX)/csl/$(CSL).csl --bibliography=$(BIB_FILE) -o $@
 
 %.odt:	%.md
-	pandoc -r markdown+simple_tables+table_captions+yaml_metadata_block -w odt -S --template=$(PREFIX)/templates/odt.template --filter pandoc-citeproc --csl=$(PREFIX)/csl/$(CSL).csl --bibliography=$(BIB_FILE) -o $@ $<
+	replace_includes $< | pandoc -r markdown+simple_tables+table_captions+yaml_metadata_block -w odt -S --template=$(PREFIX)/templates/odt.template --filter pandoc-citeproc --csl=$(PREFIX)/csl/$(CSL).csl --bibliography=$(BIB_FILE) -o $@
 
 %.tex:	%.md
 	./vc
 	@# Add `-V vc` and change pagestyle to athgit to add version control support
-	pandoc -r markdown+simple_tables+table_captions+yaml_metadata_block -w latex -s -S --latex-engine=xelatex --template=$(PREFIX)/templates/xelatex.template --filter pandoc-citeproc --csl=$(PREFIX)/csl/$(CSL).csl --bibliography=$(BIB_FILE) -V chapterstyle=hikma-article -V pagestyle=athgit -V vc -o $@ $<
+	replace_includes $< | pandoc -r markdown+simple_tables+table_captions+yaml_metadata_block -w latex -s -S --latex-engine=xelatex --template=$(PREFIX)/templates/xelatex.template --filter pandoc-citeproc --csl=$(PREFIX)/csl/$(CSL).csl --bibliography=$(BIB_FILE) -V chapterstyle=hikma-article -V pagestyle=athgit -V vc -o $@
 
 %.pdf:	%.md
 	./vc
 	@# Add `-V vc` and change pagestyle to athgit to add version control support
-	pandoc -r markdown+simple_tables+table_captions+yaml_metadata_block -s -S --latex-engine=xelatex --template=$(PREFIX)/templates/xelatex.template --filter pandoc-citeproc --csl=$(PREFIX)/csl/$(CSL).csl --bibliography=$(BIB_FILE) -V chapterstyle=hikma-article -V pagestyle=athgit -V vc -o $@ $<
+	replace_includes $< | pandoc -r markdown+simple_tables+table_captions+yaml_metadata_block -s -S --latex-engine=xelatex --template=$(PREFIX)/templates/xelatex.template --filter pandoc-citeproc --csl=$(PREFIX)/csl/$(CSL).csl --bibliography=$(BIB_FILE) -V chapterstyle=hikma-article -V pagestyle=athgit -V vc -o $@
 
 %.docx:	%.odt
 	/Applications/LibreOffice.app/Contents/MacOS/soffice --invisible --convert-to docx $<
