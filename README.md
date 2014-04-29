@@ -1,6 +1,6 @@
 ## Background
 
-This project ([final paper](http://www.andrewheiss.com/research/Andrew%20Heiss%20-%20Do%20Democracies%20Discourage%20NGO%20Cooperation.pdf)) is a replication and extension of Amanda Murdie, “Scrambling for Contact: The Determinants of Inter-NGO Cooperation in Non- Western Countries,” *Review of International Organizations* (October 2013): 1–23. It was originally written for Duke's Political Science 618, "The Politics of Institutional Change," taught by [Karen Remmer](http://polisci.duke.edu/people?Gurl=&Uil=1557&subpage=profile).
+This project ([final paper](http://www.andrewheiss.com/research/Andrew%20Heiss%20-%20Do%20Democracies%20Discourage%20NGO%20Cooperation.pdf)) is a replication and extension of [Amanda Murdie, “Scrambling for Contact: The Determinants of Inter-NGO Cooperation in Non- Western Countries,” *Review of International Organizations* (October 2013): 1–23](http://link.springer.com/article/10.1007/s11558-013-9180-2). It was originally written for Duke's Political Science 618, "The Politics of Institutional Change," taught by [Karen Remmer](http://polisci.duke.edu/people?Gurl=&Uil=1557&subpage=profile).
 
 
 ## Replication instructions
